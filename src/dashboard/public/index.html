@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice AI Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .transcript-user { @apply text-right; }
+    .transcript-ai { @apply text-left; }
+    .transcript-fn { @apply text-center text-xs italic; }
+    .status-dot { @apply inline-block w-2 h-2 rounded-full mr-2; }
+    .status-active { @apply bg-green-500; }
+    .status-speaking { @apply bg-blue-500 animate-pulse; }
+    .status-processing { @apply bg-yellow-500 animate-pulse; }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-gray-800 border-b border-gray-700 px-6 py-4">
+    <div class="flex items-center justify-between max-w-7xl mx-auto">
+      <div>
+        <h1 class="text-2xl font-bold text-white">Voice AI Agent Dashboard</h1>
+        <p class="text-sm text-gray-400">Riverside Medical Clinic &mdash; Appointment Booking System</p>
+      </div>
+      <div id="connection-status" class="flex items-center text-sm text-green-400">
+        <span class="status-dot status-active"></span> Connected
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-7xl mx-auto p-6 space-y-6">
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-gray-800 rounded-lg p-5 border border-gray-700">
+        <p class="text-xs text-gray-400 uppercase tracking-wide">Active Calls</p>
+        <p id="stat-active" class="text-3xl font-bold text-green-400 mt-1">0</p>
+      </div>
+      <div class="bg-gray-800 rounded-lg p-5 border border-gray-700">
+        <p class="text-xs text-gray-400 uppercase tracking-wide">Today's Bookings</p>
+        <p id="stat-bookings" class="text-3xl font-bold text-blue-400 mt-1">0</p>
+      </div>
+      <div class="bg-gray-800 rounded-lg p-5 border border-gray-700">
+        <p class="text-xs text-gray-400 uppercase tracking-wide">Avg Audio Latency</p>
+        <p id="stat-latency" class="text-3xl font-bold text-purple-400 mt-1">--</p>
+      </div>
+      <div class="bg-gray-800 rounded-lg p-5 border border-gray-700">
+        <p class="text-xs text-gray-400 uppercase tracking-wide">Success Rate</p>
+        <p id="stat-success" class="text-3xl font-bold text-emerald-400 mt-1">--</p>
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Active Calls -->
+      <div class="bg-gray-800 rounded-lg p-5 border border-gray-700">
+        <h2 class="text-lg font-semibold mb-4 flex items-center">
+          <span class="status-dot status-active"></span> Active Calls
+        </h2>
+        <div id="active-calls-list" class="space-y-3">
+          <p class="text-gray-500 text-sm">No active calls</p>
+        </div>
+      </div>
+
+      <!-- Live Transcript -->
+      <div class="bg-gray-800 rounded-lg p-5 border border-gray-700 flex flex-col">
+        <h2 class="text-lg font-semibold mb-3">Live Transcript</h2>
+        <select id="transcript-selector" class="bg-gray-700 text-gray-200 rounded px-3 py-2 mb-3 text-sm border border-gray-600 focus:outline-none">
+          <option value="">Select a call&hellip;</option>
+        </select>
+        <div id="transcript-container" class="flex-1 min-h-[320px] max-h-[420px] overflow-y-auto rounded border border-gray-700 bg-gray-900 p-4 space-y-2 text-sm">
+          <p class="text-gray-500">Select a call to view transcript</p>
+        </div>
+      </div>
+
+      <!-- Metrics Chart -->
+      <div class="bg-gray-800 rounded-lg p-5 border border-gray-700">
+        <h2 class="text-lg font-semibold mb-4">Performance Metrics</h2>
+        <canvas id="metricsChart" height="220"></canvas>
+      </div>
+
+      <!-- Call History -->
+      <div class="bg-gray-800 rounded-lg p-5 border border-gray-700">
+        <h2 class="text-lg font-semibold mb-4">Recent Calls</h2>
+        <div id="call-history" class="space-y-3 max-h-[400px] overflow-y-auto">
+          <p class="text-gray-500 text-sm">No call history</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/dashboard/app.js"></script>
+</body>
+</html>
